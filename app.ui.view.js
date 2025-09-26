@@ -523,7 +523,7 @@ function renderStars() {
       btn.setAttribute('type', 'button');
       btn.setAttribute('aria-pressed', i === active ? 'true' : 'false');
       if (i === active) btn.setAttribute('aria-current','true');
-      btn.textContent = (i  + 0.5);
+      btn.textContent = (i + 1);
       btn.addEventListener('click', () => {
         App.Sets.setActiveSetIndex(i);
         App.switchToSetImmediate();
