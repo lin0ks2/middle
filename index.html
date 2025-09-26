@@ -145,18 +145,28 @@
 
   <!-- Dicts modal -->
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="backdrop" id="backdrop"></div>
-    <div class="dialog">
-      <h2 id="modalTitle">Словники</h2>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="dialog">
+    <!-- Шапка -->
+    <div class="modalHeader">
+      <h2 class="modalTitle" id="modalTitle">Словари</h2>
+      <button id="modalClose" class="iconBtn small" aria-label="Close">✖️</button>
+    </div>
+
+    <!-- Тело -->
+    <div class="modalBody">
       <div id="langFlags" class="flagsRow" style="display:flex;gap:8px;align-items:center;justify-content:center;margin:8px 6px 10px;"></div>
       <div class="field">
         <div class="dictList" id="dictList"></div>
       </div>
-      <div class="modalActions">
-        <button id="okBtn" class="primary">OK</button>
-      </div>
+    </div>
+
+    <!-- Футер -->
+    <div class="modalActions" style="text-align:center">
+      <button id="okBtn" class="primary">OK</button>
     </div>
   </div>
+</div>
 
 <script src="i18n.js?v=1.6.1"></script>
   <script src="dicts.js?v=1.6.1"></script>
