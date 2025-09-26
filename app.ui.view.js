@@ -846,3 +846,36 @@ function showMotivation(type = "praise") {
     mot.classList.add("motivation-fade");
   } catch (e) {}
 }
+// Info modal wiring v1.6.2 (integrated)
+(function(){
+  var modal   = document.getElementById('infoModal');
+  if (!modal) return;
+
+  var okBtn   = modal.querySelector('#infoOk');
+  var xBtn    = modal.querySelector('#infoClose');
+  var titleEl = modal.querySelector('#infoTitle');
+  var bodyEl  = modal.querySelector('#infoContent');
+  var infoBtn = document.getElementById('btnInfo');
+
+  function t(){ try{ return (typeof App!=='undefined' && typeof App.i18n==='function') ? (App.i18n()||{}) : {}; }catch(_){ return {}; } }
+
+  function fill(){
+    var tr = t();
+    if (titleEl && tr.infoTitle) titleEl.textContent = tr.infoTitle;
+    if (okBtn) okBtn.textContent = tr.ok || 'OK';
+    if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
+    if (Array.isArray(tr.infoSteps) && bodyEl){
+      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }).join('') + '</ul>';
+    }
+  }
+  function open(){ fill(); modal.classList.remove('hidden'); }
+  function close(){ modal.classList.add('hidden'); }
+
+  if (infoBtn) infoBtn.addEventListener('click', open);
+  if (okBtn)   okBtn.addEventListener('click', close);
+  if (xBtn)    xBtn.addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill, {once:true});
+  else fill();
+})();
