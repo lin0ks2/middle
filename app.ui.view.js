@@ -475,41 +475,24 @@ function renderStars() {
     updateStats();
   }
 
-  function onIDontKnow() {
-  try{document.dispatchEvent(new CustomEvent("lexitron:idk",{detail:{word:w}}));}catch(_){}
-
-    const w = current();
-    const c = D.optionsRow.querySelector('button.optionBtn[data-correct="1"]');
-    if (c) c.classList.add('correct');
-    D.optionsRow.querySelectorAll('button.optionBtn').forEach(b => b.disabled = true);
-    try{ document.dispatchEvent(new CustomEvent('lexitron:idk', { detail:{ word: w } })); }catch(_){}
-    const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
-    const max = App.Trainer.starsMax();
-
-    if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
-      const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
-      const cur = App.Mistakes.getStars(sk, w.id) || 0;
-      App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur-0.5)));
-    } else {
-      const cur = Math.max(0, Math.min(max, App.state.stars[w.id] || 0));
-      App.state.stars[w.id] = Math.max(0, Math.min(max, cur-0.5));
+  function onIDontKnow(){
+  const w = current(); if (!w) return;
+  // highlight correct and disable options
+  try{
+    const row = App.DOM?.optionsRow || document.getElementById('optionsRow');
+    if (row){
+      const c = row.querySelector('button.optionBtn[data-correct="1"]');
+      if (c) c.classList.add('correct');
+      row.querySelectorAll('button.optionBtn').forEach(b => b.disabled = true);
     }
-
-    App.state.totals.errors += 1;
-    App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0)  + 0.5;
-
-    if (!(App.isFavorite && App.isFavorite((w._mistakeSourceKey || (App.Mistakes && App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id)) || (App.dictRegistry && App.dictRegistry.activeKey)), w.id))) {
-      if (window.MistakesGate && typeof MistakesGate.onIdk==='function') { MistakesGate.onIdk(w); } else { if(window.MistakesGate&&typeof MistakesGate.onFail==="function"){MistakesGate.onFail(w);}else{addToMistakesOnFailure(w);} }
-    }
-
-    App.saveState();
-    if (!isEndlessDict(key)) {
-      try{ if(App.Sets && App.Sets.checkCompletionAndAdvance) App.Sets.checkCompletionAndAdvance(); }catch(e){};
-    }
-    renderStars();
-    updateStats();
-    setTimeout(function () { nextWord(); }, 700);
-  }
+  }catch(_){}
+  // fire event for UI listeners, but do NOT change progress
+  try { document.dispatchEvent(new CustomEvent('lexitron:idk', { detail:{ word:w } })); } catch(_){}
+  // do not touch stars, totals, or mistakes
+  renderStars();
+  updateStats();
+  setTimeout(nextWord, 500);
+}
 
   App.renderSetsBar = function () {
     const host = document.getElementById('setsBar');
