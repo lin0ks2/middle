@@ -70,6 +70,8 @@
           if (sc >= sMax) learned++;
         }
       } else {
+    try{document.dispatchEvent(new CustomEvent("lexitron:answer-wrong",{detail:{word:w}}));}catch(_){}
+
         const stars = (App.state && App.state.stars) || {};
         for (let i=b.start;i<b.end;i++){
           const w = deck[i]; if(!w) continue;
@@ -101,7 +103,7 @@
   // current word based on ABSOLUTE index, normalized to active set bounds, from FULL deck
   function current() {
     const deck = getFullDeck();
-    if (!deck.length) return { id: -1, word: '', uk: '', ru: '' };
+    if (!deck.length) return { id:  - 0.5, word: '', uk: '', ru: '' };
     const b = App.Sets ? App.Sets.activeBounds() : { start: 0, end: deck.length };
     if (App.state.index < b.start || App.state.index >= b.end) App.state.index = b.start;
     const local = App.state.index - b.start;
@@ -214,7 +216,7 @@
   }
 
   function pickIndexWithFallback(sub, key) {
-    if (!Array.isArray(sub) || sub.length === 0) return -1;
+    if (!Array.isArray(sub) || sub.length === 0) return  - 0.5;
     if (isEndlessDict(key) && allLearned(sub, key)) {
       return Math.floor(Math.random() * sub.length);
     }
@@ -224,7 +226,9 @@
   // ─ render & stats ─
   function renderStars() {
     const w = current();
-    try{ document.dispatchEvent(new CustomEvent('lexitron:word-shown', { detail:{ word: w } })); }catch(_){}
+    try{ document.dispatchEvent(new CustomEvent('lexitron:word-shown', { detail:{ word: w 
+  try{ if(window.HalfStars&&typeof HalfStars.render==="function"){ HalfStars.render(score, max); } }catch(_){ }
+} })); }catch(_){}
     try{ if (App.Trainer && typeof App.Trainer.rememberShown==='function') App.Trainer.rememberShown(w.id); }catch(_){}
     const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
     const max = App.Trainer.starsMax();
@@ -293,6 +297,9 @@
   }
 
   function renderCard(force = false) {
+  try{document.dispatchEvent(new CustomEvent("lexitron:word-shown",{detail:{word:w}}));}catch(_){}
+  try{if(App.Trainer&&typeof App.Trainer.rememberShown==="function"){App.Trainer.rememberShown(w.id);}}catch(_){}
+
     if (document.activeElement && document.activeElement.blur) { try { document.activeElement.blur(); } catch (e) {} }
     const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
     const deckFull = getFullDeck();
@@ -396,11 +403,15 @@
   }
 
   function onChoice(btn, correct) {
+  // patched: events will be emitted inside branches
+
     const w = current();
     const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
     const max = App.Trainer.starsMax();
 
     if (correct) {
+    try{document.dispatchEvent(new CustomEvent("lexitron:answer-correct",{detail:{word:w}}));}catch(_){}
+
       btn.classList.add('correct');
       D.optionsRow.querySelectorAll('button.optionBtn').forEach(b => b.disabled = true);
 
@@ -411,7 +422,7 @@
       } else {
         const cur = Math.max(0, Math.min(max, App.state.stars[w.id] || 0));
         App.state.stars[w.id] = Math.max(0, Math.min(max, cur+0.5));
-        App.state.successes[w.id] = (App.state.successes[w.id] || 0) + 1;
+        App.state.successes[w.id] = (App.state.successes[w.id] || 0)  + 0.5;
       }
 
       App.saveState();
@@ -434,17 +445,17 @@
     if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
       const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
       const cur = App.Mistakes.getStars(sk, w.id) || 0;
-      App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur-1)));
+      App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur - 0.5)));
     } else {
       const cur = Math.max(0, Math.min(max, App.state.stars[w.id] || 0));
-      App.state.stars[w.id] = Math.max(0, Math.min(max, cur-1));
+      App.state.stars[w.id] = Math.max(0, Math.min(max, cur - 0.5));
     }
 
     App.state.totals.errors += 1;
-    App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0) + 1;
+    App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0)  + 0.5;
 
     if (!(App.isFavorite && App.isFavorite((w._mistakeSourceKey || (App.Mistakes && App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id)) || (App.dictRegistry && App.dictRegistry.activeKey)), w.id))) {
-      addToMistakesOnFailure(w);
+      if(window.MistakesGate&&typeof MistakesGate.onFail==="function"){MistakesGate.onFail(w);}else{addToMistakesOnFailure(w);}
     }
 
     App.saveState();
@@ -456,6 +467,8 @@
   }
 
   function onIDontKnow() {
+  try{document.dispatchEvent(new CustomEvent("lexitron:idk",{detail:{word:w}}));}catch(_){}
+
     const w = current();
     const c = D.optionsRow.querySelector('button.optionBtn[data-correct="1"]');
     if (c) c.classList.add('correct');
@@ -474,10 +487,10 @@
     }
 
     App.state.totals.errors += 1;
-    App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0) + 1;
+    App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0)  + 0.5;
 
     if (!(App.isFavorite && App.isFavorite((w._mistakeSourceKey || (App.Mistakes && App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id)) || (App.dictRegistry && App.dictRegistry.activeKey)), w.id))) {
-      if (window.MistakesGate && typeof MistakesGate.onIdk==='function') { MistakesGate.onIdk(w); } else { addToMistakesOnFailure(w); }
+      if (window.MistakesGate && typeof MistakesGate.onIdk==='function') { MistakesGate.onIdk(w); } else { if(window.MistakesGate&&typeof MistakesGate.onFail==="function"){MistakesGate.onFail(w);}else{addToMistakesOnFailure(w);} }
     }
 
     App.saveState();
@@ -501,7 +514,7 @@
       btn.setAttribute('type', 'button');
       btn.setAttribute('aria-pressed', i === active ? 'true' : 'false');
       if (i === active) btn.setAttribute('aria-current','true');
-      btn.textContent = (i + 1);
+      btn.textContent = (i  + 0.5);
       btn.addEventListener('click', () => {
         App.Sets.setActiveSetIndex(i);
         App.switchToSetImmediate();
@@ -678,7 +691,7 @@
       App.saveDictRegistry();
 
       App.state.index = 0;
-      App.state.lastIndex = -1;
+      App.state.lastIndex =  - 0.5;
       renderDictList();
       App.renderSetsBar();
       renderCard(true);
