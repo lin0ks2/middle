@@ -224,6 +224,8 @@
   // ─ render & stats ─
   function renderStars() {
     const w = current();
+    try{ document.dispatchEvent(new CustomEvent('lexitron:word-shown', { detail:{ word: w } })); }catch(_){}
+    try{ if (App.Trainer && typeof App.Trainer.rememberShown==='function') App.Trainer.rememberShown(w.id); }catch(_){}
     const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
     const max = App.Trainer.starsMax();
     let score = 0;
@@ -405,10 +407,10 @@
       if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
         const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
         const cur = App.Mistakes.getStars(sk, w.id) || 0;
-        App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur+1)));
+        App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur+0.5)));
       } else {
         const cur = Math.max(0, Math.min(max, App.state.stars[w.id] || 0));
-        App.state.stars[w.id] = Math.max(0, Math.min(max, cur+1));
+        App.state.stars[w.id] = Math.max(0, Math.min(max, cur+0.5));
         App.state.successes[w.id] = (App.state.successes[w.id] || 0) + 1;
       }
 
@@ -425,6 +427,7 @@
     }
 
     btn.classList.add('wrong');
+    try{ document.dispatchEvent(new CustomEvent('lexitron:answer-wrong', { detail:{ word: w } })); }catch(_){}
     if (typeof showMotivation==="function" && Math.random()<0.22) showMotivation("encouragement");
     btn.disabled = true;
 
@@ -457,23 +460,24 @@
     const c = D.optionsRow.querySelector('button.optionBtn[data-correct="1"]');
     if (c) c.classList.add('correct');
     D.optionsRow.querySelectorAll('button.optionBtn').forEach(b => b.disabled = true);
+    try{ document.dispatchEvent(new CustomEvent('lexitron:idk', { detail:{ word: w } })); }catch(_){}
     const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
     const max = App.Trainer.starsMax();
 
     if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
       const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
       const cur = App.Mistakes.getStars(sk, w.id) || 0;
-      App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur-1)));
+      App.Mistakes.setStars(sk, w.id, Math.max(0, Math.min(max, cur-0.5)));
     } else {
       const cur = Math.max(0, Math.min(max, App.state.stars[w.id] || 0));
-      App.state.stars[w.id] = Math.max(0, Math.min(max, cur-1));
+      App.state.stars[w.id] = Math.max(0, Math.min(max, cur-0.5));
     }
 
     App.state.totals.errors += 1;
     App.state.totals.sessionErrors = (App.state.totals.sessionErrors || 0) + 1;
 
     if (!(App.isFavorite && App.isFavorite((w._mistakeSourceKey || (App.Mistakes && App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id)) || (App.dictRegistry && App.dictRegistry.activeKey)), w.id))) {
-      addToMistakesOnFailure(w);
+      if (window.MistakesGate && typeof MistakesGate.onIdk==='function') { MistakesGate.onIdk(w); } else { addToMistakesOnFailure(w); }
     }
 
     App.saveState();
