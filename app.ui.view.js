@@ -224,31 +224,40 @@
   }
 
   // ─ render & stats ─
-  function renderStars() {
-    const w = current();
-    try{ document.dispatchEvent(new CustomEvent('lexitron:word-shown', { detail:{ word: w 
-  try{ if(window.HalfStars&&typeof HalfStars.render==="function"){ HalfStars.render(score, max); } }catch(_){ }
-} })); }catch(_){}
-    try{ if (App.Trainer && typeof App.Trainer.rememberShown==='function') App.Trainer.rememberShown(w.id); }catch(_){}
-    const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
-    const max = App.Trainer.starsMax();
-    let score = 0;
-    if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
-      const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
-      score = App.Mistakes.getStars(sk, w.id);
-    } else {
-      score = (App.state.stars[w.id] || 0);
-    }
-    score = Math.max(0, Math.min(max, score));
-    const host = D.starsEl; if (!host) return;
-    host.innerHTML = '';
-    for (let i = 0; i < max; i++) {
-      const s = document.createElement('span');
-      s.className = 'starIcon' + (i < score ? ' filled' : '');
-      s.textContent = '★';
-      host.appendChild(s);
-    }
+function renderStars() {
+  const w = current();
+  if (!w) return;
+
+  const key = (App.dictRegistry && App.dictRegistry.activeKey) || null;
+  const max = (App.Trainer && App.Trainer.starsMax ? App.Trainer.starsMax() : 5);
+  let score = 0;
+
+  if (key === 'mistakes' && App.Mistakes && App.Mistakes.getStars){
+    const sk = w._mistakeSourceKey || (App.Mistakes.sourceKeyFor && App.Mistakes.sourceKeyFor(w.id));
+    score = App.Mistakes.getStars(sk, w.id) || 0;
+  } else {
+    score = (App.state && App.state.stars && App.state.stars[w.id]) || 0;
   }
+
+  // базовый слой целых звёзд
+  const host = App.DOM && App.DOM.starsEl ? App.DOM.starsEl : document.getElementById('stars');
+  if (!host) return;
+  host.innerHTML = '';
+  const filled = Math.floor(Math.max(0, Math.min(max, score)));
+  for (let i = 0; i < max; i++) {
+    const s = document.createElement('span');
+    s.className = 'starIcon' + (i < filled ? ' filled' : '');
+    s.textContent = '★';
+    host.appendChild(s);
+  }
+
+  // поверх — дробная маска
+  try {
+    if (window.HalfStars && typeof HalfStars.render === 'function') {
+      HalfStars.render(score, max);
+    }
+  } catch (_) {}
+}
 
   function updateStats() {
     try {
