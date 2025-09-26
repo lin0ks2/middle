@@ -443,4 +443,38 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.08);
 }
 .modal .modalTitle{ margin:0; font-size:18px; font-weight:700; }
+
+/* v1.6.2 — выравнивание модалок: заголовок, крестик, отступы списков */
+
+/* 1) Одинаковый заголовок в шапках всех модалок */
+.modal .modalHeader .modalTitle,
+#infoModal .modal__header #infoTitle {
+  margin: 0;
+  font-size: 20px;      /* как на скрине Инструкции */
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* 2) Одинаковый крестик (X) справа в шапке */
+.modal .iconBtn.small,
+#infoModal .modal__close {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;      /* как в Инструкции */
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.08);
+  opacity: .85;
+  cursor: pointer;
+}
+.modal .iconBtn.small:hover,
+#infoModal .modal__close:hover { opacity: 1; }
+
+/* 3) Не прячем нижнюю обводку/скругление у последнего словаря */
+#modal .modalBody { padding-bottom: 20px; }   /* воздуха под контент */
+#modal .dictList { padding-bottom: 14px; }    /* чтобы низ не упирался в границу */
+#modal .dictList > *:last-child { margin-bottom: 8px; }  /* запас для последнего */
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
