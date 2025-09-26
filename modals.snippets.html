@@ -1,0 +1,47 @@
+<!-- modals.snippets.html — paste into index.html where appropriate (v1.6.2) -->
+
+<!-- INFO modal (Инструкция) -->
+<div id="infoModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+  <div class="modal__dialog">
+    <div class="modal__header">
+      <h3 id="infoTitle"></h3>
+      <button id="infoClose" class="modal__close" aria-label="Close">×</button>
+    </div>
+    <div id="infoContent" class="modal__body"><!-- filled from I18N.infoSteps --></div>
+    <div class="modal__footer">
+      <button id="infoOk" class="btn primary">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- DICTS modal (Словари) — make sure you have similar header/footer -->
+<div id="dictsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal__dialog">
+    <div class="modal__header">
+      <h3 id="modalTitle">Словари</h3>
+      <button id="modalClose" class="modal__close" aria-label="Close">×</button>
+    </div>
+    <div class="modal__body">
+      <!-- your existing dictionaries body goes here -->
+    </div>
+    <div class="modal__footer">
+      <button id="okBtn" class="btn primary">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP modal (Мастер) -->
+<div id="setupModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+  <div class="modal__dialog">
+    <div class="modal__header">
+      <h3 id="setupTitle">Настройка</h3>
+      <button id="setupClose" class="modal__close" aria-label="Close">×</button>
+    </div>
+    <div id="setupBody" class="modal__body">
+      <!-- keep your current wizard content -->
+    </div>
+    <div class="modal__footer">
+      <button id="setupOk" class="btn primary">OK</button>
+    </div>
+  </div>
+</div>
