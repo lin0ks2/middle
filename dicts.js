@@ -3,89 +3,97 @@
  * Version: 1.6.2
  * Date: 2025-09-27
  *
- * Что делает:
- *  - Формирует корректную шапку модалки «Словари»:
- *    .modalHeader с #modalTitle (слева) и #modalClose (справа).
- *  - Оставляет под шапкой существующее тело (флаги, список) и футер с OK.
- *  - Локализует заголовок и текст OK.
- *  - Закрывает по OK, по крестику и по клику на фон.
+ * Единая шапка модалки «Словари»:
+ *  - .modalHeader с #modalTitle (слева) и #modalClose (справа)
+ *  - Флаги, список и OK остаются под шапкой
+ *  - Локализация заголовка и OK
+ *  - Закрытие по OK, по X и по клику на фон
  */
 (function(){
   'use strict';
 
-  // Заглушки колод — как было в прежних сборках
+  // плейсхолдеры колод (как в прежних сборках)
   window.decks = window.decks || {};
   if (!Array.isArray(window.decks.de_verbs)) window.decks.de_verbs = [];
   if (!Array.isArray(window.decks.de_nouns)) window.decks.de_nouns = [];
 
-  function T(){
+  function i18n(){
     try { return (window.App && typeof App.i18n === 'function') ? (App.i18n()||{}) : {}; }
     catch(_) { return {}; }
   }
 
-  function ensureHeaderStructure(modal){
-    var dialog = modal && modal.querySelector('.dialog');
-    if (!dialog) return;
+  function ensureHeader(modal){
+    const dialog = modal && modal.querySelector('.dialog');
+    if (!dialog) return {header:null,title:null,closeBtn:null};
 
-    // 1) Найти/создать .modalHeader
-    var header = dialog.querySelector('.modalHeader');
+    // 1) .modalHeader
+    let header = dialog.querySelector('.modalHeader');
     if (!header){
       header = document.createElement('div');
       header.className = 'modalHeader';
+      // ставим САМЫМ первым элементом в .dialog
       dialog.insertBefore(header, dialog.firstChild);
     }
 
-    // 2) Найти/создать #modalTitle и поместить в шапку (слева)
-    var titleEl = dialog.querySelector('#modalTitle');
-    if (!titleEl){
-      titleEl = document.createElement('h2');
-      titleEl.id = 'modalTitle';
-      titleEl.textContent = 'Словари';
-    } else if (titleEl.parentElement) {
-      titleEl.parentElement.removeChild(titleEl);
-    }
-    if (!titleEl.classList.contains('modalTitle')) titleEl.classList.add('modalTitle');
-    header.insertBefore(titleEl, header.firstChild);
+    // Флекс-раскладка (на случай отсутствия CSS)
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.justifyContent = 'space-between';
 
-    // 3) Найти/создать крестик и поместить в шапку (справа)
-    var xBtn = dialog.querySelector('#modalClose') || modal.querySelector('#modalClose');
-    if (!xBtn){
-      xBtn = document.createElement('button');
-      xBtn.id = 'modalClose';
-      xBtn.className = 'iconBtn small';
-      xBtn.setAttribute('aria-label','Close');
-      xBtn.textContent = '✖️';
-    } else if (xBtn.parentElement) {
-      xBtn.parentElement.removeChild(xBtn);
+    // 2) Заголовок #modalTitle
+    let title = dialog.querySelector('#modalTitle');
+    if (!title){
+      title = document.createElement('h2');
+      title.id = 'modalTitle';
+      title.textContent = 'Словари';
+    } else if (title.parentElement) {
+      title.parentElement.removeChild(title);
     }
-    header.appendChild(xBtn);
+    if (!title.classList.contains('modalTitle')) title.classList.add('modalTitle');
+    header.insertBefore(title, header.firstChild);
+
+    // 3) Крестик #modalClose
+    let closeBtn = dialog.querySelector('#modalClose') || modal.querySelector('#modalClose');
+    if (!closeBtn){
+      closeBtn = document.createElement('button');
+      closeBtn.id = 'modalClose';
+      closeBtn.className = 'iconBtn small';
+      closeBtn.setAttribute('aria-label','Close');
+      closeBtn.textContent = '✖️';
+    } else if (closeBtn.parentElement) {
+      closeBtn.parentElement.removeChild(closeBtn);
+    }
+    header.appendChild(closeBtn);
+
+    // Удалить возможные ДУБЛИКАТЫ #modalClose, оставив только тот, что в header:
+    modal.querySelectorAll('#modalClose').forEach(btn => {
+      if (btn !== closeBtn) btn.remove();
+    });
+
+    return {header, title, closeBtn};
   }
 
-  function bindDictsModal(){
-    var modal = document.getElementById('modal');
+  function wireModal(){
+    const modal    = document.getElementById('modal');
     if (!modal) return;
 
-    // Нормализуем шапку (заголовок + крестик внутри .modalHeader)
-    ensureHeaderStructure(modal);
+    // Привести структуру
+    const {title, closeBtn} = ensureHeader(modal);
 
-    // Получить элементы после нормализации
-    var titleEl  = modal.querySelector('#modalTitle');
-    var okBtn    = modal.querySelector('#okBtn');
-    var xBtn     = modal.querySelector('#modalClose');
-    var backdrop = modal.querySelector('#backdrop');
+    const okBtn   = modal.querySelector('#okBtn');
+    const backdrop= modal.querySelector('#backdrop');
 
-    // Локализация заголовка/ОК
+    // Локализация
     function fill(){
-      var t = T();
-      if (titleEl && t.modalTitle) titleEl.textContent = t.modalTitle;
+      const t = i18n();
+      if (title && t.modalTitle) title.textContent = t.modalTitle;
       if (okBtn) okBtn.textContent = t.ok || 'OK';
     }
 
-    // Закрытие
     function close(){ modal.classList.add('hidden'); }
 
     if (okBtn)    okBtn.addEventListener('click', close);
-    if (xBtn)     xBtn.addEventListener('click', close);
+    if (closeBtn) closeBtn.addEventListener('click', close);
     if (backdrop) backdrop.addEventListener('click', close);
 
     if (document.readyState === 'loading') {
@@ -95,10 +103,9 @@
     }
   }
 
-  // Инициализация
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bindDictsModal, {once:true});
+    document.addEventListener('DOMContentLoaded', wireModal, {once:true});
   } else {
-    bindDictsModal();
+    wireModal();
   }
 })();
