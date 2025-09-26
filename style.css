@@ -437,4 +437,10 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   min-width: 112px;
 }
 
+/* v1.6.2 — общий стиль шапки модалок */
+.modal .modalHeader{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.08);
+}
+.modal .modalTitle{ margin:0; font-size:18px; font-weight:700; }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
