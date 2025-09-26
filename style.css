@@ -423,4 +423,18 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   text-decoration: none !important;
   -webkit-text-decoration: none !important;
 }
+/* v1.6.2 — унифицированный футер модалок */
+#infoModal .modalActions,
+#modal .modalActions,
+#setupModal .modalActions {
+  padding: 12px 16px 20px;    /* ← нижний паддинг, чтобы под кнопкой был воздух */
+  display: flex;
+  justify-content: center;
+}
+#infoModal .modalActions .primary,
+#modal .modalActions .primary,
+#setupModal .modalActions .primary {
+  min-width: 112px;
+}
+
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
