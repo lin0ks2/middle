@@ -44,11 +44,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LEXITRON">
 
-<link rel="stylesheet" href="./style.css?v=1.6.1">
-<link rel="stylesheet" href="modal.style.patch.css?v=1.6.2">
-  
-  
-  <!-- ============================ SOCIAL PREVIEW ============================ -->
+<link rel="stylesheet" href="./style.css?v=1.6.1"><!-- ============================ SOCIAL PREVIEW ============================ -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="LEXITRON · учите слова легко">
   <meta property="og:description" content="Карточки, быстрые сессии, Избранное и статистика прогресса. Учите новые слова каждый день без рекламы и подписки.">
@@ -121,80 +117,14 @@
     </div>
 
 <div id="infoModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
-      <div class="modalFrame">
-        <div class="modalHeader">
-          <div class="modalTitle" id="infoTitle">Info</div>
-          <button class="iconBtn small" id="infoClose" aria-label="Close">✖️</button>
-        </div>
-        <div class="modalBody">
-          <div id="infoContent" class="infoContent"></div>
-        </div>
-      </div>
+  <div class="modal__dialog">
+    <div class="modal__header">
+      <h3 id="infoTitle"></h3>
+      <button id="infoClose" class="modal__close" aria-label="Close">×</button>
     </div>
-  
-  <div id="motivation" class="motivation"></div>
-</main>
-
-<footer>
-    <div class="copyright">© All rights reserved · <span id="copyYear"></span></div>
-  </footer>
-
-<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="backdrop" id="backdrop"></div>
-    <div class="dialog">
-      <h2 id="modalTitle">Словники</h2>
-      <div id="langFlags" class="flagsRow" style="display:flex;gap:8px;align-items:center;justify-content:center;margin:8px 6px 10px;"></div>
-      <div class="field">
-        <div class="dictList" id="dictList"></div>
-      </div>
-      <div class="modalActions">
-        <button id="okBtn" class="primary">OK</button>
-      </div>
+    <div id="infoContent" class="modal__body"></div>
+    <div class="modal__footer">
+      <button id="infoOk" class="btn primary">OK</button>
     </div>
   </div>
-
-<script src="i18n.js?v=1.6.1"></script>
-  <script src="dicts.js?v=1.6.1"></script>
-
-  
-  <script src="deck.de.js?v=1.6.1"></script>
-  <script src="deck.sr.js?v=1.6.1"></script>
-  <script src="deck.en.js?v=1.6.1"></script>
-  <script src="deck.fr.js?v=1.6.1"></script>
-  <script src="deck.es.js?v=1.6.1"></script>
-
-<script src="app.core.js?v=1.6.1"></script>
-<script src="app.decks.js?v=1.6.1"></script>
-<script src="theme.js?v=1.6.1"></script>
-<script src="app.trainer.js?v=1.6.1"></script>
-<script src="app.mistakes.js?v=1.6.1"></script>
-<script src="app.favorites.js?v=1.6.1"></script>
-<script src="app.ui.view.js?v=1.6.1"></script>
-<script src="ui.options.safe.js?v=1.6.1"></script>
-<script src="app.addon.sets.js?v=1.6.1"></script>
-<script src="app.addon.penalties.js?v=1.6.1"></script>
-<script src="ui.setup.modal.js?v=1.6.1"></script>
-<script src="lang-flag.fix.js?v=1.6.1"></script>
-<script src="startup.manager.js?v=1.6.1"></script>
-<script src="app.addon.startup.js?v=1.6.1"></script>
-<script src="setup.modal.patch.js?v=1.6.2"></script>
-<script src="info.modal.patch.js?v=1.6.2"></script>
-<!-- Medium + Half-Star pack v1.6.1 -->
-<script src="trainer.medium.patch.js?v=1.6.1"></script>
-<script src="mistakes.thresholds.patch.js?v=1.6.1"></script>
-<script src="stars.half.visual.patch.js?v=1.6.1"></script>
-</div>
-
-<script src="ui.bus.js?v=1.6.1"></script>
-<script src="ui.state.js?v=1.6.1"></script>
-<script src="ui.sets.js?v=1.6.1"></script>
-<script src="ui.progress.scope.js?v=1.6.1"></script>
-<script src="ui.stats.core.js?v=1.6.1"></script>
-<script src="ui.lifecycle.js?v=1.6.1"></script>
-<script src="ui.sets.done.js?v=1.6.1"></script>
-<script src="ui.fix.js?v=1.6.1"></script>
-
-
-  <!-- --------------------------  К О Н Е Ц  --------------------------- -->
-</body>
-</html>
+</div
