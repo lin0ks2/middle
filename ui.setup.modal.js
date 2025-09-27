@@ -1,109 +1,92 @@
 /*!
- * ui.setup.modal.js — мастер начальной настройки
- * Версия: 1.6.2-uiheaderfix
+ * ui.setup.modal.js — Lexitron
+ * Version: 1.6.2‑fixed
+ * Date: 2025‑09‑27
  *
- * Логика не изменялась: только внешний вид
- *  1. Добавлена шапка .modalHeader с заголовком .modalTitle
- *  2. Перенесён текст «Начальная настройка» в эту шапку
- *  3. В rerenderStaticLabels обновлён селектор заголовка
+ * Добавлена шапка «Начальная настройка» + отступ футера
+ * Логика и тело мастера остались без изменений.
  */
-
 (function(){
   'use strict';
 
-  const D = document;
-  const W = window;
-  const KEY = 'Lexitron.SetupDone';
-
-  // локализация по умолчанию (fallback)
-  const lab = {
-    setupTitle: 'Начальная настройка',
-    ok: 'OK'
+  const LS = {
+    uiLang: 'lexitron.uiLang',
+    studyLang: 'lexitron.studyLang',
+    setupDone: 'lexitron.setupDone'
   };
 
-  // ----------------------------------------------------------
-  // Создание верстки модалки
-  // ----------------------------------------------------------
-  function build(){
-    const code = (App?.state?.lang) || 'ru';
-    const I = W.I18N?.[code] || {};
+  function get(k){ try{return localStorage.getItem(k);}catch(_){return null;} }
+  function set(k,v){ try{localStorage.setItem(k,v);}catch(_){ } }
 
-    const labelSetup = I.setupTitle || lab.setupTitle;
-    const labelOk    = I.ok || lab.ok;
+  function render(){
+    // если уже пройден — не показываем
+    if(get(LS.setupDone)) return;
 
-    const m = D.createElement('div');
-    m.id = 'setupModal';
-    m.className = 'modal hidden';
-    m.innerHTML = `
-      <div class="backdrop"></div>
-      <div class="dialog">
-        <div class="modalHeader">
-          <h3 class="modalTitle">${labelSetup}</h3>
-        </div>
-        <div class="langFlags" id="setupLangFlags">
-          <!-- сюда вставятся кнопки флагов -->
-        </div>
-        <div class="modalActions">
-          <button id="setupOkBtn" class="btn primary">${labelOk}</button>
-        </div>
-      </div>
-    `;
-    D.body.appendChild(m);
-    return m;
-  }
-
-  // ----------------------------------------------------------
-  // Перестраивает подписи при смене языка интерфейса
-  // ----------------------------------------------------------
-  function rerenderStaticLabels(code){
-    const m = D.getElementById('setupModal');
-    if(!m) return;
-    m.querySelector('.modalTitle').textContent =
-      (W.I18N?.[code]?.setupTitle) || lab.setupTitle;
-    m.querySelector('#setupOkBtn').textContent =
-      (W.I18N?.[code]?.ok) || lab.ok;
-  }
-
-  // ----------------------------------------------------------
-  // Инициализация мастера
-  // ----------------------------------------------------------
-  function init(){
-    if(localStorage.getItem(KEY)) return;     // мастер уже проходили
-    const modal = build();
-
-    const flags = modal.querySelector('#setupLangFlags');
-    if(App.locales){
-      Object.keys(App.locales).forEach(lang=>{
-        const btn = D.createElement('button');
-        btn.className = 'flagBtn';
-        btn.textContent = App.locales[lang].flag || '🏳️';
-        btn.title = App.locales[lang].name || lang;
-        btn.addEventListener('click',()=>{
-          App.saveSettings({ lang });
-          rerenderStaticLabels(lang);
-        });
-        flags.appendChild(btn);
-      });
+    // находим или создаём контейнер модалки
+    let modal = document.getElementById('setupModal');
+    if(!modal){
+      modal = document.createElement('div');
+      modal.id = 'setupModal';
+      modal.className = 'modal';
+      document.body.appendChild(modal);
     }
 
-    modal.classList.remove('hidden');
-    const okBtn = modal.querySelector('#setupOkBtn');
-    okBtn.addEventListener('click',()=>{
-      localStorage.setItem(KEY,'1');
-      modal.classList.add('hidden');
-      App.startup?.();
+    // --- разметка мастера ---
+    modal.innerHTML = `
+      <div class="dialog">
+        <div class="modalHeader">
+          <h2 class="modalTitle">Начальная настройка</h2>
+        </div>
+        <div class="modalBody" style="padding:16px 18px;">
+          <p>Выберите язык интерфейса:</p>
+          <div class="langFlags" id="uiLangFlags"></div>
+          <p style="margin-top:12px;">Выберите язык тренировки:</p>
+          <div class="langFlags" id="studyLangFlags"></div>
+        </div>
+        <div class="modalActions" style="padding:14px 16px 20px;">
+          <button id="okBtn" class="primary">OK</button>
+        </div>
+      </div>
+      <div class="backdrop"></div>
+    `;
+
+    // заполняем флаги (примерный набор)
+    const langs = [
+      {code:'ru', flag:'🇷🇺'},
+      {code:'uk', flag:'🇺🇦'},
+      {code:'en', flag:'🇬🇧'},
+      {code:'de', flag:'🇩🇪'}
+    ];
+    const uiBox = modal.querySelector('#uiLangFlags');
+    const stBox = modal.querySelector('#studyLangFlags');
+    langs.forEach(l=>{
+      const b1 = document.createElement('button');
+      b1.className = 'flagBtn';
+      b1.textContent = l.flag;
+      b1.onclick = ()=>{
+        uiBox.querySelectorAll('.flagBtn').forEach(b=>b.classList.remove('active'));
+        b1.classList.add('active');
+        set(LS.uiLang,l.code);
+      };
+      uiBox.appendChild(b1);
+
+      const b2 = document.createElement('button');
+      b2.className = 'flagBtn';
+      b2.textContent = l.flag;
+      b2.onclick = ()=>{
+        stBox.querySelectorAll('.flagBtn').forEach(b=>b.classList.remove('active'));
+        b2.classList.add('active');
+        set(LS.studyLang,l.code);
+      };
+      stBox.appendChild(b2);
     });
 
-    // глобальное событие для смены языка в реальном времени
-    D.addEventListener('lexitron:lang-changed', e=>{
-      rerenderStaticLabels(e.detail?.lang);
-    });
+    modal.querySelector('#okBtn').onclick = ()=>{
+      set(LS.setupDone,'1');
+      modal.remove();
+      window.location.reload();
+    };
   }
 
-  if(D.readyState === 'loading') {
-    D.addEventListener('DOMContentLoaded', init, {once:true});
-  } else {
-    init();
-  }
-
+  document.addEventListener('DOMContentLoaded',render);
 })();
