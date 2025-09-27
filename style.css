@@ -538,8 +538,8 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* 3) Окно списка словарей: одинаковый «хвост» сверху/снизу, без срезов */
 #modal .dictList{
   margin-top: 8px !important;     /* от линии до списка — как сверху/снизу */
-  padding-top: 4px !important;
-  padding-bottom: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 
 /* 4) Выровнять 1 ↔ 2 на главном экране (как на твоей схеме) */
