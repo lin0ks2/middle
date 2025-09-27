@@ -519,3 +519,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #modal .dictList {
   margin-top: 4px !important;                        /* отступ от линии до списка */
 }
+/* скрываем крестики у двух модалок */
+#infoModal .modal__close { display:none !important; }
+#modal .modalHeader .iconBtn.small, 
+#modal #modalClose { display:none !important; }
