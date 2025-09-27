@@ -499,3 +499,19 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 @media (max-width: 420px){
   #modal .dictList{ max-height: 224px !important; }
 }
+/* v1.6.2 — FORCE divider for Info modal (light & dark, beats overrides) */
+#infoModal.modal .modal__dialog > .modal__header{
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border) !important;
+  position: relative; /* для псевдоэлемента ниже */
+}
+
+/* дублирующий «страховочный» разделитель поверх любых сбросов бордера */
+#infoModal.modal .modal__dialog > .modal__header::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
