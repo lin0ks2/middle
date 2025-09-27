@@ -565,3 +565,78 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #modal .modalActions{
   padding: 14px 16px 10px !important;
 }
+/* ── v1.6.2 · Dicts / Info modals — equal spacing + light divider ───────── */
+
+/* 0) Общий бордер в шапках модалок (и светлая тема тоже) */
+#modal .modalHeader,
+#infoModal .modal__header{
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* 1) «Словари»: равные отступы сверху/снизу блока со списком */
+#modal .flagsRow,
+#modal #langFlags{
+  /* отступ под флажками до линии + небольшой «воздух» */
+  padding: 8px 12px 12px !important;
+  margin: 8px 0 8px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+#modal .dictList{
+  /* отступ от линии до списка и равный хвост перед футером */
+  margin-top: 8px !important;
+  padding-top: 4px !important;   /* чтобы первая строка не прилипала к линии */
+  padding-bottom: 12px !important;
+  max-height: 216px;             /* прежнее целевое окно */
+}
+
+#modal .dictList > *:last-child{
+  margin-bottom: 4px !important; /* чтобы нижняя кромка не пряталась */
+}
+
+/* 2) Футер (кнопка OK) — тот же «воздух», что сверху от списка */
+#modal .modalActions{
+  padding: 14px 16px 12px !important;
+}
+
+/* 3) Главный экран: выровнять 1 и 2 (заголовок словаря vs. отступ под #setStats) */
+.dictActiveTitle{ margin-top: 14px !important; margin-bottom: 8px !important; }
+#setStats{ margin-top: 8px !important; margin-bottom: 14px !important; }
+
+/* ── v1.6.2 · Dicts / Info modals — equal spacing + light divider ───────── */
+
+/* 0) Общий бордер в шапках модалок (и светлая тема тоже) */
+#modal .modalHeader,
+#infoModal .modal__header{
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* 1) «Словари»: равные отступы сверху/снизу блока со списком */
+#modal .flagsRow,
+#modal #langFlags{
+  /* отступ под флажками до линии + небольшой «воздух» */
+  padding: 8px 12px 12px !important;
+  margin: 8px 0 8px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+#modal .dictList{
+  /* отступ от линии до списка и равный хвост перед футером */
+  margin-top: 8px !important;
+  padding-top: 4px !important;   /* чтобы первая строка не прилипала к линии */
+  padding-bottom: 12px !important;
+  max-height: 216px;             /* прежнее целевое окно */
+}
+
+#modal .dictList > *:last-child{
+  margin-bottom: 4px !important; /* чтобы нижняя кромка не пряталась */
+}
+
+/* 2) Футер (кнопка OK) — тот же «воздух», что сверху от списка */
+#modal .modalActions{
+  padding: 14px 16px 12px !important;
+}
+
+/* 3) Главный экран: выровнять 1 и 2 (заголовок словаря vs. отступ под #setStats) */
+.dictActiveTitle{ margin-top: 14px !important; margin-bottom: 8px !important; }
+#setStats{ margin-top: 8px !important; margin-bottom: 14px !important; }
