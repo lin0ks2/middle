@@ -513,5 +513,5 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* окно прокрутки списка после линии */
 #modal .dictList {
-  margin-top: 8px !important;                        /* отступ от линии до списка */
+  margin-top: 12px !important;                        /* отступ от линии до списка */
 }
