@@ -478,13 +478,13 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* одинаковый футер с OK в обеих модалках */
 #infoModal .modal__footer,
 #modal .modalActions {
-  padding: 14px 16px 12px;          /* низ под кнопкой OK */
+  padding: 14px 16px 10px;          /* низ под кнопкой OK */
 }
 
 /* одинаковый «воздух» перед футером */
 #infoModal .modal__body,
 #modal .modalBody {
-  padding-bottom: 6px;             /* мало и одинаково */
+  padding-bottom: 4px;             /* мало и одинаково */
 }
 
 /* список словарей: компактный хвост и видимая нижняя обводка */
