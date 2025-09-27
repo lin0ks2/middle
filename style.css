@@ -477,4 +477,26 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #modal .modalBody { padding-bottom: 20px; }   /* воздуха под контент */
 #modal .dictList { padding-bottom: 14px; }    /* чтобы низ не упирался в границу */
 #modal .dictList > *:last-child { margin-bottom: 8px; }  /* запас для последнего */
+
+/* v1.6.2 — выравниваем футер и низ контента у всех модалок */
+
+/* одинаковые отступы футера под кнопкой ОК */
+#infoModal .modal__footer,
+#modal .modalActions {
+  padding: 14px 16px 26px; /* было меньше – добавили "воздух" снизу */
+}
+
+/* даём место внизу тела модалок */
+#infoModal .modal__body,
+#modal .modalBody {
+  padding-bottom: 18px;
+}
+
+/* чтобы нижняя кромка последнего элемента списка не пряталась */
+#modal .dictList {
+  padding-bottom: 12px;   /* запас под последним элементом */
+}
+#modal .dictList > *:last-child {
+  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
+}
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
