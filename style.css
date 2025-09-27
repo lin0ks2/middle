@@ -473,57 +473,30 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 .modal .iconBtn.small:hover,
 #infoModal .modal__close:hover { opacity: 1; }
 
-/* 3) Не прячем нижнюю обводку/скругление у последнего словаря */
-#modal .modalBody { padding-bottom: 20px; }   /* воздуха под контент */
-#modal .dictList { padding-bottom: 20px; }    /* чтобы низ не упирался в границу */
-#modal .dictList > *:last-child { margin-bottom: 20px; }  /* запас для последнего */
+/* ── Lexitron v1.6.2 · Dicts/Info modals · unified spacing ───────────────── */
 
-/* v1.6.2 — выравниваем футер и низ контента у всех модалок */
-
-/* одинаковые отступы футера под кнопкой ОК */
+/* одинаковый футер с OK в обеих модалках */
 #infoModal .modal__footer,
 #modal .modalActions {
-  padding: 14px 16px 12px; /* было меньше – добавили "воздух" снизу */
+  padding: 14px 16px 16px;          /* низ под кнопкой OK */
 }
 
-/* даём место внизу тела модалок */
+/* одинаковый «воздух» перед футером */
 #infoModal .modal__body,
 #modal .modalBody {
-  padding-bottom: 12px;
+  padding-bottom: 10px;             /* мало и одинаково */
 }
 
-/* --- FIX: одинаковые отступы футера и низ списка в модалке "Словари" --- */
-#infoModal .modal__footer,
-#modal .modalActions {
-  padding: 14px 16px 20px; /* воздух под кнопкой ОК */
-}
-
-#infoModal .modal__body,
-#modal .modalBody {
-  padding-bottom: 18px;     /* воздух под контентом перед футером */
-}
-
+/* список словарей: компактный хвост и видимая нижняя обводка */
 #modal .dictList {
-  padding-bottom: 14px;     /* запас, чтобы низ списка не упирался в футер */
+  max-height: 218px;                /* окно прокрутки под 3 строки без среза */
+  padding-bottom: 8px;              /* небольшой запас под списком */
 }
-
 #modal .dictList > *:last-child {
-  margin-bottom: 10px;      /* дополнительный зазор у последнего элемента */
+  margin-bottom: 8px;               /* чтобы нижняя кромка не пряталась */
 }
-/* --- Lexitron v1.6.2 · Dicts modal fine-tune --- */
 
-/* 1) меньше «воздуха» после списка: 8px */
-#modal .dictList { padding-bottom: 8px; }
-#modal .dictList > *:last-child { margin-bottom: 8px; }
-
-/* 2) окно прокрутки списка: +32px от прежнего (было 200px) */
-#modal .dictList { max-height: 232px; }
-
-/* при очень узких экранах — ещё немного высоты,
-   чтобы последний видимый элемент никогда не резался */
+/* очень узкие экраны: немного выше окно, чтобы тоже не резало */
 @media (max-width: 420px) {
-  #modal .dictList { max-height: 248px; }
+  #modal .dictList { max-height: 226px; }
 }
-
-/* чуть-чуть «воздуха» перед футером, чтобы кнопка не прилипала */
-#modal .modalBody { padding-bottom: 14px; }
