@@ -512,7 +512,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 }
 /* даём маленькую подушку сверху у окна прокрутки */
 #modal .dictList{
-  padding-top: 6px;      /* ← ключевой фикс */
+  padding-top: 10px;      /* ← ключевой фикс */
   margin-top: 0;         /* на всякий случай, чтобы не было отрицательных микросмещений */
 }
 /* окно прокрутки списка после линии */
