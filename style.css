@@ -489,7 +489,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* список словарей: компактный хвост и видимая нижняя обводка */
 #modal .dictList {
-  max-height: 215px;                 /* окно прокрутки под 3 строки без среза */
+  max-height: 216px;                 /* окно прокрутки под 3 строки без среза */
   padding-bottom: 4px;               /* небольшой запас под списком */
 }
 #modal .dictList > *:last-child {
@@ -498,7 +498,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* очень узкие экраны: немного выше окно, чтобы тоже не резало */
 @media (max-width: 420px) {
-  #modal .dictList { max-height: 223px; }
+  #modal .dictList { max-height: 224px; }
 }
 
 /* ── Dicts modal · divider under flags + spacing to list ────────────────── */
@@ -513,5 +513,5 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* окно прокрутки списка после линии */
 #modal .dictList {
-  margin-top: 12px !important;                        /* отступ от линии до списка */
+  margin-top: 8px !important;                        /* отступ от линии до списка */
 }
