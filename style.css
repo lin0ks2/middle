@@ -656,4 +656,10 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   font-weight: 600;
   margin: 8px 0 6px;
 }
-
+/* v1.6.2 — force header divider for ALL modals (light & dark) */
+#modal .modalHeader,
+#infoModal .modal__header,
+#setupModal .modalHeader{
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
