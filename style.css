@@ -555,3 +555,15 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   display:block; text-align:center; font-weight:600;
   margin:8px 0 6px;
 }
+/* v1.6.2 — FINAL fix: равный отступ снизу в Инструкции */
+#infoModal.modal .modal__dialog > .modal__footer{
+  display: flex;
+  justify-content: center;
+  padding: 14px 16px 20px !important; /* воздух под кнопкой OK */
+  border-top: 1px solid var(--border); /* лёгкий разделитель с телом */
+}
+
+/* (страховка) тело инфо-модалки не «съедает» нижний отступ */
+#infoModal.modal .modal__dialog > .modal__body{
+  padding-bottom: 4px !important;
+}
