@@ -439,13 +439,16 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   padding: 14px 16px 20px !important;
 }
 
-/* Футеры (кнопка OK) — единый «воздух» */
-#infoModal .modalActions,
-#modal .modalActions,
-#setupModal .modalActions{
+/* Инструкция: базовый нижний паддинг контейнера как у .dialog (14px) */
+#infoModal .modalFrame{
+  padding-bottom: 14px !important;
+}
+
+/* Футер «Инструкции» — тот же воздух, что и в Словарях/Мастере */
+#infoModal .modalActions{
   display: flex;
   justify-content: center;
-  padding: 14px 16px 20px !important; /* воздух под кнопкой OK */
+  padding: 14px 16px 20px !important; /* одинаково с #modal/#setupModal */
 }
 
 /* 3) Модалка «Словари» — разделитель под флажками и отступы
