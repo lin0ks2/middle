@@ -10,14 +10,17 @@
 
   // CSS
   var css=[
-  '#stars.halfstars{display:flex;gap:6px;align-items:center;font-size:22px}',   // базовый размер, как в style.css
-'#stars.halfstars .star{position:relative;width:1em;height:1em;color:#fbbf24}', // 1em от 22px = 22px; цвет как у .starIcon.filled
-'#stars.halfstars .star::before{content:"☆";position:absolute;inset:0;opacity:.35;color:#cbd5e1}', // пустая звезда как в теме
-'#stars.halfstars .star::after{content:"★";position:absolute;inset:0;overflow:hidden;width:var(--p,0%)}',
-'#stars.halfstars .star::after{transition:width .15s ease}'
-    '#stars.halfstars .star::before{content:"☆";position:absolute;inset:0;opacity:.35}',
-    '#stars.halfstars .star::after{content:"★";position:absolute;inset:0;overflow:hidden;width:var(--p,0%)}',
-    '#stars.halfstars .star::after{transition:width .15s ease}'
+  '#stars.halfstars{display:flex;gap:6px;align-items:center;font-size:22px}', // базовый размер
+'#stars.halfstars .star{position:relative;display:inline-block;width:1em;height:1em;line-height:1}',
+
+/* контур пустой звезды */
+'#stars.halfstars .star::before{content:"☆";position:absolute;left:0;top:0;right:0;bottom:0;color:#cbd5e1;opacity:.35}',
+
+/* заливка — управляем шириной через --p (0%..100%) */
+'#stars.halfstars .star::after{content:"★";position:absolute;left:0;top:0;bottom:0;width:var(--p,0%);overflow:hidden;color:#fbbf24;white-space:nowrap;}',
+
+/* плавное изменение ширины заливки */
+'#stars.halfstars .star::after{transition:width .15s ease}',
   ].join('');
   var st=D.createElement('style'); st.textContent=css; (D.head||D.documentElement).appendChild(st);
 
