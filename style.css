@@ -436,7 +436,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #infoModal .modal__footer,
 #modal .modalActions,
 #setupModal .modalActions{
-  padding: 14px 16px 10px !important;
+  padding: 14px 16px 20px !important;
 }
 
 /* 2) Единый «воздух» перед футером внутри тела модалок */
