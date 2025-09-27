@@ -10,8 +10,11 @@
 
   // CSS
   var css=[
-    '#stars.halfstars{display:flex;gap:.25rem;align-items:center}',
-    '#stars.halfstars .star{position:relative;width:1.2em;height:1.2em;color:#f6b400}',
+  '#stars.halfstars{display:flex;gap:6px;align-items:center;font-size:22px}',   // базовый размер, как в style.css
+'#stars.halfstars .star{position:relative;width:1em;height:1em;color:#fbbf24}', // 1em от 22px = 22px; цвет как у .starIcon.filled
+'#stars.halfstars .star::before{content:"☆";position:absolute;inset:0;opacity:.35;color:#cbd5e1}', // пустая звезда как в теме
+'#stars.halfstars .star::after{content:"★";position:absolute;inset:0;overflow:hidden;width:var(--p,0%)}',
+'#stars.halfstars .star::after{transition:width .15s ease}'
     '#stars.halfstars .star::before{content:"☆";position:absolute;inset:0;opacity:.35}',
     '#stars.halfstars .star::after{content:"★";position:absolute;inset:0;overflow:hidden;width:var(--p,0%)}',
     '#stars.halfstars .star::after{transition:width .15s ease}'
