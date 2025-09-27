@@ -519,3 +519,49 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #modal .dictList {
   margin-top: 4px !important;                        /* отступ от линии до списка */
 }
+/* ── v1.6.2 · Vertical rhythm & dividers tweaks ───────────────────────── */
+
+/* 1) Верхний заголовок активного словаря — такой же отступ сверху,
+      как «нижняя статистика → карточка» (см. пункт 2) */
+.dictActiveTitle{
+  margin-top: 14px !important;   /* было 6px — делаем комфортным */
+  margin-bottom: 8px !important;
+}
+
+/* 2) Расстояние от нижней статистики (#setStats) до карточки —
+      фиксируем одинаковым во всех темах */
+#setStats{
+  margin-top: 8px !important;
+  margin-bottom: 14px !important;  /* ключевой отступ «2» со скрина */
+}
+
+/* 3) Модалка «Словари»: единые разделители и отступы и для светлой темы */
+#modal .modalHeader{
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* горизонтальный разделитель под строкой флажков */
+#modal .flagsRow,
+#modal #langFlags{
+  padding: 8px 12px 12px !important;
+  margin: 4px 0 8px !important;
+  border-bottom: 1px solid var(--border) !important; /* работает и в светлой теме */
+}
+
+/* 4) Окно прокрутки списка + одинаковые «пиксели» сверху/снизу */
+#modal .dictList{
+  max-height: 216px;      /* окно под ~3 строки без среза */
+  padding-top: 4px;       /* чтобы первая строка не прилипала к разделителю */
+  padding-bottom: 8px;    /* тот самый «4» → делаем как «3» */
+  margin-top: 4px;
+}
+
+/* небольшой запас у последнего элемента, чтобы нижняя кромка не пряталась */
+#modal .dictList > *:last-child{
+  margin-bottom: 4px;
+}
+
+/* 5) Футер модалки (OK) — одинаковый «воздух», как в «Инфо» */
+#modal .modalActions{
+  padding: 14px 16px 10px !important;
+}
