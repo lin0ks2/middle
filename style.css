@@ -494,9 +494,9 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* чтобы нижняя кромка последнего элемента списка не пряталась */
 #modal .dictList {
-  padding-bottom: 12px;   /* запас под последним элементом */
+  padding-bottom: 15px;   /* запас под последним элементом */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
+  margin-bottom: 15px;    /* доп. пространство для последнего элемента */
 }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
