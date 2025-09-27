@@ -640,3 +640,20 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* 3) Главный экран: выровнять 1 и 2 (заголовок словаря vs. отступ под #setStats) */
 .dictActiveTitle{ margin-top: 14px !important; margin-bottom: 8px !important; }
 #setStats{ margin-top: 8px !important; margin-bottom: 14px !important; }
+/* ── v1.6.2 · Setup-modal: divider + centered labels ─────────────────── */
+
+/* 1) Линия под шапкой мастера */
+#setupModal .modalHeader{
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* 2) Центрирование подписей к выбору языков */
+#setupModal .field label,
+#setupModal .field .label,
+#setupModal .field span.label{
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  margin: 8px 0 6px;
+}
+
