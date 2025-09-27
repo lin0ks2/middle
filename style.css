@@ -458,8 +458,8 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* 2) Одинаковый крестик (X) справа в шапке */
 .modal .iconBtn.small,
 #infoModal .modal__close {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -497,6 +497,6 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   padding-bottom: 12px;   /* запас под последним элементом */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
+  margin-bottom: 50px;    /* доп. пространство для последнего элемента */
 }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
