@@ -423,243 +423,79 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   text-decoration: none !important;
   -webkit-text-decoration: none !important;
 }
-/* v1.6.2 — унифицированный футер модалок */
-#infoModal .modalActions,
-#modal .modalActions,
-#setupModal .modalActions {
-  padding: 12px 16px 20px;    /* ← нижний паддинг, чтобы под кнопкой был воздух */
-  display: flex;
-  justify-content: center;
-}
-#infoModal .modalActions .primary,
-#modal .modalActions .primary,
-#setupModal .modalActions .primary {
-  min-width: 112px;
-}
+/* ── v1.6.2 · Modals cleanup: equal spacing + light dividers ─────────── */
 
-/* v1.6.2 — общий стиль шапки модалок */
-.modal .modalHeader{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.08);
-}
-.modal .modalTitle{ margin:0; font-size:18px; font-weight:700; }
-
-/* v1.6.2 — выравнивание модалок: заголовок, крестик, отступы списков */
-
-/* 1) Одинаковый заголовок в шапках всех модалок */
-.modal .modalHeader .modalTitle,
-#infoModal .modal__header #infoTitle {
-  margin: 0;
-  font-size: 18px;      /* как на скрине Инструкции */
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* 2) Одинаковый крестик (X) справа в шапке */
-.modal .iconBtn.small,
-#infoModal .modal__close {
-  width: 30px;
-  height: 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;      /* как в Инструкции */
-  border-radius: 8px;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,.08);
-  opacity: .85;
-  cursor: pointer;
-}
-.modal .iconBtn.small:hover,
-#infoModal .modal__close:hover { opacity: 1; }
-
-/* ── Lexitron v1.6.2 · Dicts/Info modals · unified spacing ───────────────── */
-
-/* одинаковый футер с OK в обеих модалках */
-#infoModal .modal__footer,
-#modal .modalActions {
-  padding: 14px 16px 10px;          /* низ под кнопкой OK */
-}
-
-/* одинаковый «воздух» перед футером */
-#infoModal .modal__body,
-#modal .modalBody {
-  padding-bottom: 4px;              /* мало и одинаково */
-}
-
-/* список словарей: компактный хвост и видимая нижняя обводка */
-#modal .dictList {
-  max-height: 216px;                 /* окно прокрутки под 3 строки без среза */
-  padding-bottom: 4px;               /* небольшой запас под списком */
-}
-#modal .dictList > *:last-child {
-  margin-bottom: 4px;                /* чтобы нижняя кромка не пряталась */
-}
-
-/* очень узкие экраны: немного выше окно, чтобы тоже не резало */
-@media (max-width: 420px) {
-  #modal .dictList { max-height: 224px; }
-}
-
-/* ── Dicts modal · divider under flags + spacing to list ────────────────── */
-
-/* флажки внутри модалки словарей */
-#modal .flagsRow,
-#modal #langFlags {
-  padding: 8px 12px 12px !important;                /* немного воздуха вокруг флажков */
-  margin: 4px 0 8px !important;                     /* отступ вниз до линии */
-  border-bottom: 1px solid rgba(255,255,255,.08) !important; /* разделительная линия */
-}
-/* даём маленькую подушку сверху у окна прокрутки */
-#modal .dictList{
-  padding-top: 4px;      /* ← ключевой фикс */
-  margin-top: 0;         /* на всякий случай, чтобы не было отрицательных микросмещений */
-}
-/* окно прокрутки списка после линии */
-#modal .dictList {
-  margin-top: 4px !important;                        /* отступ от линии до списка */
-}
-/* ── v1.6.2 · Vertical rhythm & dividers tweaks ───────────────────────── */
-
-/* 1) Верхний заголовок активного словаря — такой же отступ сверху,
-      как «нижняя статистика → карточка» (см. пункт 2) */
-.dictActiveTitle{
-  margin-top: 14px !important;   /* было 6px — делаем комфортным */
-  margin-bottom: 8px !important;
-}
-
-/* 2) Расстояние от нижней статистики (#setStats) до карточки —
-      фиксируем одинаковым во всех темах */
-#setStats{
-  margin-top: 8px !important;
-  margin-bottom: 14px !important;  /* ключевой отступ «2» со скрина */
-}
-
-/* 3) Модалка «Словари»: единые разделители и отступы и для светлой темы */
-#modal .modalHeader{
-  border-bottom: 1px solid var(--border) !important;
-}
-
-/* горизонтальный разделитель под строкой флажков */
-#modal .flagsRow,
-#modal #langFlags{
-  padding: 8px 12px 12px !important;
-  margin: 4px 0 8px !important;
-  border-bottom: 1px solid var(--border) !important; /* работает и в светлой теме */
-}
-
-/* 4) Окно прокрутки списка + одинаковые «пиксели» сверху/снизу */
-#modal .dictList{
-  max-height: 216px;      /* окно под ~3 строки без среза */
-  padding-top: 4px;       /* чтобы первая строка не прилипала к разделителю */
-  padding-bottom: 8px;    /* тот самый «4» → делаем как «3» */
-  margin-top: 4px;
-}
-
-/* небольшой запас у последнего элемента, чтобы нижняя кромка не пряталась */
-#modal .dictList > *:last-child{
-  margin-bottom: 4px;
-}
-
-/* 5) Футер модалки (OK) — одинаковый «воздух», как в «Инфо» */
-#modal .modalActions{
-  padding: 14px 16px 10px !important;
-}
-/* ── v1.6.2 · Dicts / Info modals — equal spacing + light divider ───────── */
-
-/* 0) Общий бордер в шапках модалок (и светлая тема тоже) */
+/* 0) Общая линия в шапках модалок (Инфо, Словари, Мастер) */
+#infoModal .modal__header,
 #modal .modalHeader,
-#infoModal .modal__header{
-  border-bottom: 1px solid var(--border) !important;
-}
-
-/* 1) «Словари»: равные отступы сверху/снизу блока со списком */
-#modal .flagsRow,
-#modal #langFlags{
-  /* отступ под флажками до линии + небольшой «воздух» */
-  padding: 8px 12px 12px !important;
-  margin: 8px 0 8px !important;
-  border-bottom: 1px solid var(--border) !important;
-}
-
-#modal .dictList{
-  /* отступ от линии до списка и равный хвост перед футером */
-  margin-top: 8px !important;
-  padding-top: 4px !important;   /* чтобы первая строка не прилипала к линии */
-  padding-bottom: 12px !important;
-  max-height: 216px;             /* прежнее целевое окно */
-}
-
-#modal .dictList > *:last-child{
-  margin-bottom: 4px !important; /* чтобы нижняя кромка не пряталась */
-}
-
-/* 2) Футер (кнопка OK) — тот же «воздух», что сверху от списка */
-#modal .modalActions{
-  padding: 14px 16px 12px !important;
-}
-
-/* 3) Главный экран: выровнять 1 и 2 (заголовок словаря vs. отступ под #setStats) */
-.dictActiveTitle{ margin-top: 14px !important; margin-bottom: 8px !important; }
-#setStats{ margin-top: 8px !important; margin-bottom: 14px !important; }
-
-/* ── v1.6.2 · Dicts / Info modals — equal spacing + light divider ───────── */
-
-/* 0) Общий бордер в шапках модалок (и светлая тема тоже) */
-#modal .modalHeader,
-#infoModal .modal__header{
-  border-bottom: 1px solid var(--border) !important;
-}
-
-/* 1) «Словари»: равные отступы сверху/снизу блока со списком */
-#modal .flagsRow,
-#modal #langFlags{
-  /* отступ под флажками до линии + небольшой «воздух» */
-  padding: 8px 12px 12px !important;
-  margin: 8px 0 8px !important;
-  border-bottom: 1px solid var(--border) !important;
-}
-
-#modal .dictList{
-  /* отступ от линии до списка и равный хвост перед футером */
-  margin-top: 8px !important;
-  padding-top: 4px !important;   /* чтобы первая строка не прилипала к линии */
-  padding-bottom: 12px !important;
-  max-height: 216px;             /* прежнее целевое окно */
-}
-
-#modal .dictList > *:last-child{
-  margin-bottom: 4px !important; /* чтобы нижняя кромка не пряталась */
-}
-
-/* 2) Футер (кнопка OK) — тот же «воздух», что сверху от списка */
-#modal .modalActions{
-  padding: 14px 16px 12px !important;
-}
-
-/* 3) Главный экран: выровнять 1 и 2 (заголовок словаря vs. отступ под #setStats) */
-.dictActiveTitle{ margin-top: 14px !important; margin-bottom: 8px !important; }
-#setStats{ margin-top: 8px !important; margin-bottom: 14px !important; }
-/* ── v1.6.2 · Setup-modal: divider + centered labels ─────────────────── */
-
-/* 1) Линия под шапкой мастера */
 #setupModal .modalHeader{
   border-bottom: 1px solid var(--border) !important;
 }
 
-/* 2) Центрирование подписей к выбору языков */
+/* 1) Футеры (кнопка OK) — единый «воздух» */
+#infoModal .modal__footer,
+#modal .modalActions,
+#setupModal .modalActions{
+  padding: 14px 16px 10px !important;
+}
+
+/* 2) Единый «воздух» перед футером внутри тела модалок */
+#infoModal .modal__body,
+#modal .modalBody,
+#setupModal .modalBody{
+  padding-bottom: 4px !important;
+}
+
+/* 3) Модалка «Словари» — разделитель под флажками и отступы
+      (работает и в светлой теме) */
+#modal .flagsRow,
+#modal #langFlags{
+  padding: 8px 12px 12px !important;
+  margin: 8px 0 8px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* 4) Окно прокрутки списка словарей: высота + «пиксели» сверху/снизу */
+#modal .dictList{
+  max-height: 216px !important;   /* 3 строки без среза на большинстве экранов */
+  margin-top: 8px !important;     /* от линии (см. п.3) до списка */
+  padding-top: 4px !important;    /* чтобы первая строка не прилипала к линии */
+  padding-bottom: 12px !important;/* хвост перед футером (равно «3» со скрина) */
+  overflow-y: auto;
+}
+#modal .dictList > *:last-child{
+  margin-bottom: 4px !important;  /* нижняя кромка не прячется */
+}
+
+/* 5) Главный экран: выровнять 1↔2 (см. твои метки на скрине) */
+.dictActiveTitle{
+  margin-top: 14px !important;    /* как отступ «2» под верхней статистикой */
+  margin-bottom: 8px !important;
+}
+#setStats{
+  margin-top: 8px !important;
+  margin-bottom: 14px !important;
+}
+
+/* 6) Мастер первой настройки: линия в шапке уже есть (см. п.0),
+      центрируем подписи к группам флажков */
 #setupModal .field label,
 #setupModal .field .label,
 #setupModal .field span.label{
-  display: block;
-  text-align: center;
-  font-weight: 600;
-  margin: 8px 0 6px;
+  display:block;
+  text-align:center;
+  font-weight:600;
+  margin:8px 0 6px;
 }
-/* v1.6.2 — force header divider for ALL modals (light & dark) */
-#modal .modalHeader,
-#infoModal .modal__header,
-#setupModal .modalHeader{
-  border-bottom: 1px solid var(--border) !important;
-  box-shadow: none !important;
+
+/* 7) Чуть больше кликабельности крестиков в шапках модалок */
+#infoModal .modal__header .modal__close,
+#modal .modalHeader .iconBtn.small,
+#setupModal .modalHeader .iconBtn.small{
+  width:30px; height:30px; border-radius:8px;
+}
+
+/* 8) Узкие экраны: чуть выше окно списка, чтобы не резало низ */
+@media (max-width: 420px){
+  #modal .dictList{ max-height: 224px !important; }
 }
