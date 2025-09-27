@@ -450,7 +450,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 .modal .modalHeader .modalTitle,
 #infoModal .modal__header #infoTitle {
   margin: 0;
-  font-size: 20px;      /* как на скрине Инструкции */
+  font-size: 18px;      /* как на скрине Инструкции */
   font-weight: 700;
   line-height: 1.2;
 }
@@ -475,7 +475,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* 3) Не прячем нижнюю обводку/скругление у последнего словаря */
 #modal .modalBody { padding-bottom: 20px; }   /* воздуха под контент */
-#modal .dictList { padding-bottom: 14px; }    /* чтобы низ не упирался в границу */
+#modal .dictList { padding-bottom: 20px; }    /* чтобы низ не упирался в границу */
 #modal .dictList > *:last-child { margin-bottom: 8px; }  /* запас для последнего */
 
 /* v1.6.2 — выравниваем футер и низ контента у всех модалок */
@@ -497,6 +497,6 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   padding-bottom: 12px;   /* запас под последним элементом */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 50px;    /* доп. пространство для последнего элемента */
+  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
 }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
