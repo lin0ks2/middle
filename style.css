@@ -439,11 +439,13 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   padding: 14px 16px 20px !important;
 }
 
-/* 2) Единый «воздух» перед футером внутри тела модалок */
-#infoModal .modal__body,
-#modal .modalBody,
-#setupModal .modalBody{
-  padding-bottom: 4px !important;
+/* Футеры (кнопка OK) — единый «воздух» */
+#infoModal .modalActions,
+#modal .modalActions,
+#setupModal .modalActions{
+  display: flex;
+  justify-content: center;
+  padding: 14px 16px 20px !important; /* воздух под кнопкой OK */
 }
 
 /* 3) Модалка «Словари» — разделитель под флажками и отступы
