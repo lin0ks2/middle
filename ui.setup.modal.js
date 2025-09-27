@@ -1,13 +1,12 @@
 /*!
  * ui.setup.modal.js — Lexitron
- * Version: 1.6.2 (visual unification only)
+ * Version: 1.6.2-2 (visual unify + robust fallbacks + boot)
  * Date: 2025-09-27
  *
- * - Keeps existing logic (shouldShow/gate, LS keys, enable/disable OK)
- * - Switches markup to modalFrame + modalHeader/modalBody/modalActions (like Info)
- * - Keeps the ❌ close button
- * - Adds backdrop click-to-close
- * - OK label prefers i18n 'startBtn' if present, falls back to 'ok'
+ * Visual only, but adds:
+ *  - Localized fallbacks (ru/uk) if i18n keys are missing
+ *  - After OK: dispatch 'lexitron:setup-done' and try App.bootstrap()
+ *  - Keeps original ids and logic; shows close (X) and closes on backdrop
  */
 (function(){
   const LS = {
@@ -17,51 +16,84 @@
     setupDone: 'lexitron.setupDone',
     legacyActiveKey: 'lexitron.activeKey'
   };
+
+  // Built-in fallbacks in case i18n keys are absent
+  const FB = {
+    ru: {
+      setupTitle: 'Мастер настроек',
+      uiLanguage: 'Язык интерфейса',
+      studyLanguage: 'Язык изучения',
+      startBtn: 'Начнём!'
+    },
+    uk: {
+      setupTitle: 'Майстер налаштувань',
+      uiLanguage: 'Мова інтерфейсу',
+      studyLanguage: 'Мова вивчення',
+      startBtn: 'Почнемо!'
+    }
+  };
+
   function get(k){ try{ const v = localStorage.getItem(k); return v===null? '' : v; }catch(_){ return ''; } }
   function set(k,d){ try{ localStorage.setItem(k, String(d)); }catch(_){ } }
-  function L(lang){ try{ return (window.I18N && I18N[lang]) || (I18N && I18N.uk) || {}; }catch(_){ return {}; } }
-  function T(key, def, lang){
-    try{
-      const bag = lang ? ((window.I18N && I18N[lang]) || {}) : ((window.I18N && I18N[(get(LS.uiLang)||'').toLowerCase()]) || {});
-      return bag[key] || def || key;
-    }catch(_){ return def || key; }
+  function bag(lang){ try{ return (window.I18N && I18N[lang]) || {}; }catch(_){ return {}; } }
+  function devLang(){
+    try{ return String((navigator.language||'ru').slice(0,2)).toLowerCase(); }catch(_){ return 'ru'; }
   }
-  function deviceLang(){
-    try{
-      const nav = (navigator.language || navigator.userLanguage || 'ru').slice(0,2).toLowerCase();
-      return (nav==='uk'?'uk':'ru');
-    }catch(_){ return 'ru'; }
+  function effectiveUiLang(){
+    const ls = (get(LS.uiLang)||'').toLowerCase();
+    if (ls) return ls;
+    const app = (window.App && App.settings && App.settings.lang) ? String(App.settings.lang).toLowerCase() : '';
+    return app || (devLang()==='uk'?'uk':'ru');
   }
-  function effectiveLang(){
-    const ls = get(LS.uiLang);
-    if (ls) return String(ls).toLowerCase();
-    const appLang = (window.App&&App.settings&&App.settings.lang) ? String(App.settings.lang).toLowerCase() : '';
-    return (appLang || deviceLang());
+  function tr(lang, key){
+    const main = bag(lang)[key];
+    if (main) return main;
+    const f = (FB[lang] && FB[lang][key]) || null;
+    if (f) return f;
+    // last resort
+    return key;
+  }
+
+  function builtinKeys(){
+    try{
+      if (window.App && App.Decks && typeof App.Decks.builtinKeys==='function') return App.Decks.builtinKeys();
+      return Object.keys(window.decks||{});
+    }catch(_){ return []; }
+  }
+  function firstDeckForLang(lang){
+    const pref=(lang||'').toLowerCase()+'_';
+    const keys=builtinKeys().filter(k=>String(k).startsWith(pref));
+    const preferred=pref+'verbs';
+    if (keys.includes(preferred)) return preferred;
+    return keys[0]||'';
+  }
+
+  function shouldShow(){
+    try{ if (/(?:\?|&)setup=1(?:&|$)/.test(location.search)) return true; }catch(_){}
+    const done = get(LS.setupDone)==='true';
+    const dk = get(LS.deckKey) || get(LS.legacyActiveKey);
+    if (!dk) return true;
+    try{ if (!window.decks || !Array.isArray(window.decks[dk]) || window.decks[dk].length < 4) return true; }catch(_){}
+    return !done;
   }
 
   function build(){
-    // pin current effective UI lang to LS (so flags match)
-    const eff = effectiveLang();
+    const eff = effectiveUiLang();
     if (!get(LS.uiLang)) set(LS.uiLang, eff);
 
-    // build modal only once
     let m = document.getElementById('setupModal');
-    if (m){
-      m.classList.remove('hidden');
-      return;
-    }
+    if (m){ m.classList.remove('hidden'); return; }
+
     m = document.createElement('div');
     m.id = 'setupModal';
     m.className = 'modal hidden';
     m.setAttribute('role','dialog');
     m.setAttribute('aria-modal','true');
 
-    const labelSetup = T('setupTitle', L(eff).setupTitle, eff) || T('modalTitle','Словари', eff);
-    const labelUi    = T('uiLanguage', L(eff).uiLanguage, eff);
-    const labelStudy = T('studyLanguage', L(eff).studyLanguage, eff);
-    // prefer startBtn if exists; fallback to ok/confirm
-    const okI18n = T('startBtn', null, eff);
-    const labelOk = okI18n || T('ok', L(eff).ok, eff) || T('confirm', L(eff).ok, eff) || 'OK';
+    const labelSetup = tr(eff, 'setupTitle');
+    const labelUi    = tr(eff, 'uiLanguage');
+    const labelStudy = tr(eff, 'studyLanguage');
+    const labelOk    = tr(eff, 'startBtn') || tr(eff, 'ok');
 
     m.innerHTML = [
       '<div class="backdrop"></div>',
@@ -90,15 +122,7 @@
 
     document.body.appendChild(m);
 
-    // Theme bootstrap (non-invasive)
-    try{
-      const body=document.body;
-      if (!body.getAttribute('data-theme')){
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-      }
-    }catch(_){}
-
+    // Controls
     const uiFlagsEl    = m.querySelector('#setupUiFlags');
     const studyFlagsEl = m.querySelector('#setupStudyFlags');
     const okBtn        = m.querySelector('#setupConfirm');
@@ -110,24 +134,25 @@
     function setActiveStudy(v){ set(LS.studyLang, String(v||'').toLowerCase()); }
 
     function rerenderStaticLabels(code){
-      const lab = L(code);
-      m.querySelector('#setupTitle').textContent = lab.setupTitle || labelSetup;
-      // prefer startBtn if exists
-      okBtn.textContent = (lab.startBtn || lab.ok || lab.confirm || labelOk);
-      const labels = m.querySelectorAll('.field .label');
-      if (labels[0]) labels[0].textContent = lab.uiLanguage || labelUi;
-      if (labels[1]) labels[1].textContent = lab.studyLanguage || labelStudy;
+      const lang = code || effectiveUiLang();
+      m.querySelector('#setupTitle').textContent = tr(lang,'setupTitle');
+      okBtn.textContent = tr(lang,'startBtn') || tr(lang,'ok');
+      const labs = m.querySelectorAll('.field .label');
+      if (labs[0]) labs[0].textContent = tr(lang,'uiLanguage');
+      if (labs[1]) labs[1].textContent = tr(lang,'studyLanguage');
     }
 
-    function renderUiFlags(){
+    // UI language flags
+    (function renderUiFlags(){
       uiFlagsEl.innerHTML='';
-      const current = effectiveLang();
-      const candidates = Object.keys(window.I18N||{}).filter(x=>['ru','uk','en'].includes(x));
-      (candidates.length?candidates:['ru','uk']).forEach(code=>{
+      const cur = effectiveUiLang();
+      const candidates = Object.keys(window.I18N||{});
+      const allowed = ['ru','uk'].filter(x=>candidates.includes(x));
+      (allowed.length?allowed:['ru','uk']).forEach(code=>{
         const b=document.createElement('button');
-        b.className='flagBtn'+(code===current?' active':''); b.dataset.code=code;
+        b.className='flagBtn'+(code===cur?' active':''); b.dataset.code=code;
         b.title=code.toUpperCase();
-        b.textContent = (window.FLAG_EMOJI && window.FLAG_EMOJI[code]) || (code==='ru'?'🇷🇺':code==='uk'?'🇺🇦':code.toUpperCase());
+        b.textContent = (code==='ru'?'🇷🇺':code==='uk'?'🇺🇦':code.toUpperCase());
         b.addEventListener('click',()=>{
           uiFlagsEl.querySelectorAll('.flagBtn').forEach(x=>x.classList.remove('active'));
           b.classList.add('active');
@@ -137,35 +162,13 @@
         });
         uiFlagsEl.appendChild(b);
       });
-    }
+    })();
 
-    function builtinKeys(){
-      try{
-        if (window.App && App.Decks && typeof App.Decks.builtinKeys==='function') return App.Decks.builtinKeys();
-        return Object.keys(window.decks||{});
-      }catch(_){ return []; }
-    }
-    function firstDeckForLang(lang){
-      const pref=(lang||'').toLowerCase()+'_';
-      const keys=builtinKeys().filter(k=>String(k).startsWith(pref));
-      const preferred=pref+'verbs';
-      if (keys.includes(preferred)) return preferred;
-      return keys[0]||'';
-    }
-
-    function activeStudyOrGuess(){
-      let cur = activeStudy();
-      if (!cur){
-        const dk = get(LS.deckKey);
-        if (dk) cur = String(dk).split('_')[0]||'';
-      }
-      return cur;
-    }
-
-    function renderStudyFlags(){
+    // Study language flags
+    (function renderStudyFlags(){
       studyFlagsEl.innerHTML='';
       const langs = Array.from(new Set(builtinKeys().map(k=>k.split('_')[0]))).filter(Boolean);
-      let cur = activeStudyOrGuess();
+      let cur = activeStudy() || (get(LS.deckKey)||'').split('_')[0] || langs[0] || '';
       langs.forEach(code=>{
         const b=document.createElement('button');
         b.className='flagBtn'+(cur===code?' active':''); b.dataset.code=code;
@@ -180,26 +183,18 @@
         });
         studyFlagsEl.appendChild(b);
       });
-      const cur2 = activeStudyOrGuess();
-      if (cur2){
-        const first = firstDeckForLang(cur2);
-        if (first){ set(LS.deckKey, first); okBtn.disabled=false; }
-      }
-    }
+      const first = firstDeckForLang(cur);
+      if (first){ set(LS.deckKey, first); okBtn.disabled=false; }
+    })();
 
-    renderUiFlags();
-    renderStudyFlags();
-    okBtn.disabled = !get(LS.deckKey);
-
-    // open modal
+    // show
     m.classList.remove('hidden');
 
-    function close(){
-      m.classList.add('hidden');
-    }
+    function close(){ m.classList.add('hidden'); }
+
     okBtn.addEventListener('click', ()=>{
-      const ui = activeUi() || effectiveLang();
-      const st = activeStudy() || get(LS.studyLang) || '';
+      const ui = activeUi() || effectiveUiLang();
+      const st = activeStudy();
       let dk = get(LS.deckKey);
       if (!dk && st){ dk = firstDeckForLang(st); if (dk) set(LS.deckKey, dk); }
       if (!dk) return;
@@ -210,30 +205,18 @@
       set(LS.setupDone, 'true');
       set(LS.legacyActiveKey, dk);
 
-      if (window.App && App.settings){
-        App.settings.lang = ui;
-        try{ App.saveSettings && App.saveSettings(App.settings); }catch(_){}
-      }
-      try{ document.dispatchEvent(new Event('i18n:lang-changed')); }catch(_){}
+      if (window.App && App.settings){ App.settings.lang = ui; try{ App.saveSettings && App.saveSettings(App.settings); }catch(_){ } }
+
+      // Notify and boot
+      try{ document.dispatchEvent(new CustomEvent('lexitron:setup-done', {detail:{ui, st, dk}})); }catch(_){}
+      try{ App.bootstrap && App.bootstrap(); }catch(_){}
       close();
     });
+
     if (closeBtn) closeBtn.addEventListener('click', close);
     const backdrop = m.querySelector('.backdrop');
     if (backdrop) backdrop.addEventListener('click', (e)=>{ if (e.target===backdrop) close(); });
   }
 
-  function shouldShow(initial){
-    try{
-      var force = /(?:\?|&)setup=1(?:&|$)/.test(location.search);
-      if (force) return true;
-    }catch(_){}
-    try{
-      var dk = localStorage.getItem('lexitron.deckKey') || localStorage.getItem('lexitron.activeKey');
-      if (!dk) return true;
-      if (!window.decks || !Array.isArray(window.decks[dk]) || window.decks[dk].length < 4) return true;
-    }catch(_){ return true; }
-    return get(LS.setupDone) !== 'true';
-  }
-
-  window.SetupModal = { build, shouldShow, LS };
+  window.SetupModal = { build, shouldShow };
 })();
