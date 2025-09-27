@@ -483,20 +483,20 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* одинаковые отступы футера под кнопкой ОК */
 #infoModal .modal__footer,
 #modal .modalActions {
-  padding: 14px 16px 26px; /* было меньше – добавили "воздух" снизу */
+  padding: 14px 16px 12px; /* было меньше – добавили "воздух" снизу */
 }
 
 /* даём место внизу тела модалок */
 #infoModal .modal__body,
 #modal .modalBody {
-  padding-bottom: 18px;
+  padding-bottom: 12px;
 }
 
 /* чтобы нижняя кромка последнего элемента списка не пряталась */
 #modal .dictList {
-  padding-bottom: 15px;   /* запас под последним элементом */
+  padding-bottom: 12px;   /* запас под последним элементом */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 15px;    /* доп. пространство для последнего элемента */
+  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
 }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
