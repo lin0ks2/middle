@@ -510,7 +510,11 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   margin: 4px 0 8px !important;                     /* отступ вниз до линии */
   border-bottom: 1px solid rgba(255,255,255,.08) !important; /* разделительная линия */
 }
-
+/* даём маленькую подушку сверху у окна прокрутки */
+#modal .dictList{
+  padding-top: 6px;      /* ← ключевой фикс */
+  margin-top: 0;         /* на всякий случай, чтобы не было отрицательных микросмещений */
+}
 /* окно прокрутки списка после линии */
 #modal .dictList {
   margin-top: 8px !important;                        /* отступ от линии до списка */
