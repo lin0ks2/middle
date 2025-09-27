@@ -510,3 +510,20 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 #modal .dictList > *:last-child {
   margin-bottom: 10px;      /* дополнительный зазор у последнего элемента */
 }
+/* --- Lexitron v1.6.2 · Dicts modal fine-tune --- */
+
+/* 1) меньше «воздуха» после списка: 8px */
+#modal .dictList { padding-bottom: 8px; }
+#modal .dictList > *:last-child { margin-bottom: 8px; }
+
+/* 2) окно прокрутки списка: +32px от прежнего (было 200px) */
+#modal .dictList { max-height: 232px; }
+
+/* при очень узких экранах — ещё немного высоты,
+   чтобы последний видимый элемент никогда не резался */
+@media (max-width: 420px) {
+  #modal .dictList { max-height: 248px; }
+}
+
+/* чуть-чуть «воздуха» перед футером, чтобы кнопка не прилипала */
+#modal .modalBody { padding-bottom: 14px; }
