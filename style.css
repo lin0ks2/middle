@@ -478,22 +478,22 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* одинаковый футер с OK в обеих модалках */
 #infoModal .modal__footer,
 #modal .modalActions {
-  padding: 14px 16px 16px;          /* низ под кнопкой OK */
+  padding: 14px 16px 12px;          /* низ под кнопкой OK */
 }
 
 /* одинаковый «воздух» перед футером */
 #infoModal .modal__body,
 #modal .modalBody {
-  padding-bottom: 10px;             /* мало и одинаково */
+  padding-bottom: 6px;             /* мало и одинаково */
 }
 
 /* список словарей: компактный хвост и видимая нижняя обводка */
 #modal .dictList {
   max-height: 215px;                /* окно прокрутки под 3 строки без среза */
-  padding-bottom: 8px;              /* небольшой запас под списком */
+  padding-bottom: 4px;              /* небольшой запас под списком */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 8px;               /* чтобы нижняя кромка не пряталась */
+  margin-bottom: 4px;               /* чтобы нижняя кромка не пряталась */
 }
 
 /* очень узкие экраны: немного выше окно, чтобы тоже не резало */
