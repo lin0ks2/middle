@@ -476,7 +476,8 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 /* 3) Не прячем нижнюю обводку/скругление у последнего словаря */
 #modal .modalBody { padding-bottom: 20px; }   /* воздуха под контент */
 #modal .dictList { padding-bottom: 20px; }    /* чтобы низ не упирался в границу */
-#modal .dictList > *:last-child { margin-bottom: 8px; }  /* запас для последнего */
+#modal .dictList > *:last-child { margin-bottom: 20
+  px; }  /* запас для последнего */
 
 /* v1.6.2 — выравниваем футер и низ контента у всех модалок */
 
@@ -494,9 +495,10 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* чтобы нижняя кромка последнего элемента списка не пряталась */
 #modal .dictList {
-  padding-bottom: 12px;   /* запас под последним элементом */
+  padding-bottom: 20
+    px;   /* запас под последним элементом */
 }
 #modal .dictList > *:last-child {
-  margin-bottom: 10px;    /* доп. пространство для последнего элемента */
+  margin-bottom: 20px;    /* доп. пространство для последнего элемента */
 }
 /* --------------------------  К О Н Е Ц  style.css  -------------------------- */
