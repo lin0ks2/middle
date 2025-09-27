@@ -489,7 +489,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* список словарей: компактный хвост и видимая нижняя обводка */
 #modal .dictList {
-  max-height: 218px;                /* окно прокрутки под 3 строки без среза */
+  max-height: 215px;                /* окно прокрутки под 3 строки без среза */
   padding-bottom: 8px;              /* небольшой запас под списком */
 }
 #modal .dictList > *:last-child {
@@ -498,5 +498,5 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
 
 /* очень узкие экраны: немного выше окно, чтобы тоже не резало */
 @media (max-width: 420px) {
-  #modal .dictList { max-height: 226px; }
+  #modal .dictList { max-height: 223px; }
 }
