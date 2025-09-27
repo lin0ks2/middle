@@ -515,3 +515,43 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   background: var(--border);
   pointer-events: none;
 }
+/* ── v1.6.2 · final overrides: visible dividers (light) + equal spacing ── */
+
+/* 1) Чёткая линия в шапке Инструкции (поверх любых прежних правил) */
+#infoModal .modalHeader{
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* 2) «Словари»: разделитель под флажками должен быть виден и в светлой теме */
+#modal .flagsRow,
+#modal #langFlags{
+  border-bottom: 1px solid var(--border) !important;
+  padding: 8px 12px 12px !important;
+  margin: 8px 0 8px !important;
+}
+
+/* 3) Окно списка словарей: одинаковый «хвост» сверху/снизу, без срезов */
+#modal .dictList{
+  margin-top: 8px !important;     /* от линии до списка — как сверху/снизу */
+  padding-top: 4px !important;
+  padding-bottom: 12px !important;
+}
+
+/* 4) Выровнять 1 ↔ 2 на главном экране (как на твоей схеме) */
+.dictActiveTitle{
+  margin-top: 14px !important;    /* расстояние от шапки до названия словаря */
+  margin-bottom: 8px !important;
+}
+#setStats{
+  margin-top: 8px !important;
+  margin-bottom: 14px !important; /* расстояние от нижней статистики до карточки */
+}
+
+/* 5) Мастер: линия в шапке и центр лейблов (на случай, если где-то сбрасывается) */
+#setupModal .modalHeader{
+  border-bottom: 1px solid var(--border) !important;
+}
+#setupModal .field .label{
+  display:block; text-align:center; font-weight:600;
+  margin:8px 0 6px;
+}
